@@ -1,7 +1,7 @@
-# Virtuoze Neptune Suite
+# Virtuoze Neptune Framework
 Virtuoze Neptune Suite is a set of features dedicated to architects team to build productive and efficient frameworks. It is composed by 3 components : XNeptune, CNeptune & INeptune.
 
-## XNeptune
+## Virtuoze Neptune Extension
 XNeptune is a library that offer extra extensions define by an architects team to manage technical requirements and framework basic.
 
 ### Application
@@ -18,7 +18,7 @@ XNeptune is a library that offer extra extensions define by an architects team t
 ### Usage
 _coming soon_
 
-## CNeptune
+## Virtuoze Neptune Injector
 CNeptune is a compiler that rewrite .net assembly to match with architects needs define with XNeptune.
 
 ### Application
@@ -34,5 +34,5 @@ CNeptune is a compiler that rewrite .net assembly to match with architects needs
 ### Usage
 _coming soon_
 
-## INeptune
+## Virtuoze Neptune Visualizer
 INeptune is an application that allow developers or architects to visualize a representation of CNeptune.
