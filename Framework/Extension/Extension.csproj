@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9F0365C5-E6A9-48EC-ABDA-FF0C98724F71}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Virtuoze.Neptune.Extension</RootNamespace>
+    <AssemblyName>Virtuoze.Neptune.Extension</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="System\Runtime\Advice\Advice.cs" />
+    <Compile Include="System\Runtime\Advice\IAdvice.cs" />
+    <Compile Include="System\Runtime\Advisor\Advisor.cs" />
+    <Compile Include="System\Runtime\Advisor\Async\Advisor.Async.cs" />
+    <Compile Include="System\Runtime\Advisor\Async\State\Advisor.Async.State.cs" />
+    <Compile Include="System\Runtime\Advisor\Async\State\Machine\Advisor.Async.State.Machine.Before.cs" />
+    <Compile Include="System\Runtime\Advisor\Async\State\Machine\Advisor.Async.State.Machine.cs" />
+    <Compile Include="System\Runtime\Advisor\Async\State\Machine\After\Advisor.Async.State.Machine.After.cs" />
+    <Compile Include="System\Runtime\Advisor\Async\State\Machine\After\Advisor.Async.State.Machine.After.Returning.cs" />
+    <Compile Include="System\Runtime\Advisor\Async\State\Machine\After\Advisor.Async.State.Machine.After.Throwing.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\Advisor.Basic.Around.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\Advisor.Basic.Before.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\Advisor.Basic.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\After\Advisor.Basic.After.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\After\Advisor.Basic.After.Returning.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\After\Advisor.Basic.After.Throwing.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\Async\Advisor.Basic.Async.Before.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\Async\Advisor.Basic.Async.cs" />
+    <Compile Include="System\Runtime\Advisor\Linq\Advisor.Linq.Around.cs" />
+    <Compile Include="System\Runtime\Advisor\Linq\Advisor.Linq.Before.cs" />
+    <Compile Include="System\Runtime\Advisor\Linq\Advisor.Linq.cs" />
+    <Compile Include="System\Runtime\Advisor\Linq\Advisor.Linq.Patcher.cs" />
+    <Compile Include="System\Runtime\Advisor\Linq\After\Advisor.Linq.After.cs" />
+    <Compile Include="System\Runtime\Advisor\Linq\After\Advisor.Linq.After.Returning.cs" />
+    <Compile Include="System\Runtime\Advisor\Linq\After\Advisor.Linq.After.Throwing.cs" />
+    <Compile Include="System\Runtime\Advisor\Linq\Async\Advisor.Linq.Async.cs" />
+    <Compile Include="System\Runtime\Advisor\Reflection\Advisor.Reflection.Around.cs" />
+    <Compile Include="System\Runtime\Advisor\Reflection\Advisor.Reflection.Before.cs" />
+    <Compile Include="System\Runtime\Advisor\Reflection\Advisor.Reflection.cs" />
+    <Compile Include="System\Runtime\Advisor\Reflection\After\Advisor.Reflection.After.cs" />
+    <Compile Include="System\Runtime\Advisor\Reflection\After\Advisor.Reflection.After.Returning.cs" />
+    <Compile Include="System\Runtime\Advisor\Reflection\After\Advisor.Reflection.After.Throwing.cs" />
+    <Compile Include="System\Runtime\Advisor\Reflection\Async\Advisor.Reflection.Async.cs" />
+    <Compile Include="System\Runtime\Aspect\Aspect.Activity.cs" />
+    <Compile Include="System\Runtime\Aspect\Aspect.cs" />
+    <Compile Include="System\Runtime\Aspect\Directory\Aspect.Directory.cs" />
+    <Compile Include="System\Runtime\Aspect\Directory\Aspect.Directory.Entry.cs" />
+    <Compile Include="System\Runtime\Aspect\IAspect.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\Collections\Generic\Collection.cs" />
+    <Compile Include="System\Collections\Generic\Enumerable.cs" />
+    <Compile Include="System\Collections\Generic\Enumerable.Enumerator.cs" />
+    <Compile Include="System\Linq\Expressions\Parameter.cs" />
+    <Compile Include="System\Linq\Expressions\__LambdaExpression.cs" />
+    <Compile Include="System\Reflection\Argument.cs" />
+    <Compile Include="System\Reflection\Authority.cs" />
+    <Compile Include="System\Reflection\Emit\__BinaryReader.cs" />
+    <Compile Include="System\Reflection\Emit\__ILGenerator.cs" />
+    <Compile Include="System\Reflection\Emit\__Label.cs" />
+    <Compile Include="System\Reflection\Emit\__ModuleBuilder.cs" />
+    <Compile Include="System\Reflection\Instruction.cs" />
+    <Compile Include="System\Reflection\Metadata.cs" />
+    <Compile Include="System\Reflection\Signature.cs" />
+    <Compile Include="System\Reflection\__AssemblyName.cs" />
+    <Compile Include="System\Reflection\__MethodBase.cs" />
+    <Compile Include="System\Reflection\__ParameterInfo.cs" />
+    <Compile Include="System\Reflection\__Type.cs" />
+    <Compile Include="System\Resource.cs" />
+    <Compile Include="System\Runtime\Closure.cs" />
+    <Compile Include="System\Runtime\Closure.Function.cs" />
+    <Compile Include="System\Runtime\Closure.Routine.cs" />
+    <Compile Include="System\Singleton.cs" />
+    <Compile Include="System\__AppDomain.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="System\Runtime\Advisor\Basic\Async\After\" />
+    <Folder Include="System\Runtime\Advisor\Linq\Async\After\" />
+    <Folder Include="System\Runtime\Advisor\Reflection\Async\After\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
