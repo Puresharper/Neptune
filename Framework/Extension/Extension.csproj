@@ -40,24 +40,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.Factory.cs" />
+    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IFactory.cs" />
+    <Compile Include="System\Runtime\Advice\Boundary\Advice.IBoundary.cs" />
+    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.cs" />
     <Compile Include="System\Runtime\Advice\Advice.cs" />
+    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IAfter.cs" />
+    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IResume.cs" />
+    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IYield.cs" />
+    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IBefore.cs" />
     <Compile Include="System\Runtime\Advice\IAdvice.cs" />
     <Compile Include="System\Runtime\Advisor\Advisor.cs" />
-    <Compile Include="System\Runtime\Advisor\Async\Advisor.Async.cs" />
-    <Compile Include="System\Runtime\Advisor\Async\State\Advisor.Async.State.cs" />
-    <Compile Include="System\Runtime\Advisor\Async\State\Machine\Advisor.Async.State.Machine.Before.cs" />
-    <Compile Include="System\Runtime\Advisor\Async\State\Machine\Advisor.Async.State.Machine.cs" />
-    <Compile Include="System\Runtime\Advisor\Async\State\Machine\After\Advisor.Async.State.Machine.After.cs" />
-    <Compile Include="System\Runtime\Advisor\Async\State\Machine\After\Advisor.Async.State.Machine.After.Returning.cs" />
-    <Compile Include="System\Runtime\Advisor\Async\State\Machine\After\Advisor.Async.State.Machine.After.Throwing.cs" />
+    <Compile Include="System\Runtime\Advisor\Basic\Advisor.Basic.Boundary.cs" />
     <Compile Include="System\Runtime\Advisor\Basic\Advisor.Basic.Around.cs" />
     <Compile Include="System\Runtime\Advisor\Basic\Advisor.Basic.Before.cs" />
     <Compile Include="System\Runtime\Advisor\Basic\Advisor.Basic.cs" />
     <Compile Include="System\Runtime\Advisor\Basic\After\Advisor.Basic.After.cs" />
     <Compile Include="System\Runtime\Advisor\Basic\After\Advisor.Basic.After.Returning.cs" />
     <Compile Include="System\Runtime\Advisor\Basic\After\Advisor.Basic.After.Throwing.cs" />
-    <Compile Include="System\Runtime\Advisor\Basic\Async\Advisor.Basic.Async.Before.cs" />
-    <Compile Include="System\Runtime\Advisor\Basic\Async\Advisor.Basic.Async.cs" />
     <Compile Include="System\Runtime\Advisor\Linq\Advisor.Linq.Around.cs" />
     <Compile Include="System\Runtime\Advisor\Linq\Advisor.Linq.Before.cs" />
     <Compile Include="System\Runtime\Advisor\Linq\Advisor.Linq.cs" />
@@ -65,14 +65,12 @@
     <Compile Include="System\Runtime\Advisor\Linq\After\Advisor.Linq.After.cs" />
     <Compile Include="System\Runtime\Advisor\Linq\After\Advisor.Linq.After.Returning.cs" />
     <Compile Include="System\Runtime\Advisor\Linq\After\Advisor.Linq.After.Throwing.cs" />
-    <Compile Include="System\Runtime\Advisor\Linq\Async\Advisor.Linq.Async.cs" />
     <Compile Include="System\Runtime\Advisor\Reflection\Advisor.Reflection.Around.cs" />
     <Compile Include="System\Runtime\Advisor\Reflection\Advisor.Reflection.Before.cs" />
     <Compile Include="System\Runtime\Advisor\Reflection\Advisor.Reflection.cs" />
     <Compile Include="System\Runtime\Advisor\Reflection\After\Advisor.Reflection.After.cs" />
     <Compile Include="System\Runtime\Advisor\Reflection\After\Advisor.Reflection.After.Returning.cs" />
     <Compile Include="System\Runtime\Advisor\Reflection\After\Advisor.Reflection.After.Throwing.cs" />
-    <Compile Include="System\Runtime\Advisor\Reflection\Async\Advisor.Reflection.Async.cs" />
     <Compile Include="System\Runtime\Aspect\Aspect.Activity.cs" />
     <Compile Include="System\Runtime\Aspect\Aspect.cs" />
     <Compile Include="System\Runtime\Aspect\Directory\Aspect.Directory.cs" />
@@ -104,11 +102,7 @@
     <Compile Include="System\Singleton.cs" />
     <Compile Include="System\__AppDomain.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="System\Runtime\Advisor\Basic\Async\After\" />
-    <Folder Include="System\Runtime\Advisor\Linq\Async\After\" />
-    <Folder Include="System\Runtime\Advisor\Reflection\Async\After\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

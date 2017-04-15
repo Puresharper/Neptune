@@ -24,6 +24,11 @@ namespace Virtuoze.Neptune.Injector
         static private readonly MethodInfo GetFunctionPointer = System.Reflection.Metadata<RuntimeMethodHandle>.Method(_Method => _Method.GetFunctionPointer());
         static private readonly MethodInfo CreateDelegate = System.Reflection.Metadata.Method(() => Delegate.CreateDelegate(System.Reflection.Argument<Type>.Value, System.Reflection.Argument<MethodInfo>.Value));
 
+        static Program()
+        {
+            //TODO load extension from assembly location (over?)
+        }
+
         static public void Main(string[] arguments)
         {
             if (arguments == null) { throw new ArgumentNullException(); }

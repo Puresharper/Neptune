@@ -10,7 +10,7 @@ namespace System.Runtime
     /// <summary>
     /// Advice.
     /// </summary>
-    public sealed class Advice : IAdvice
+    public sealed partial class Advice : IAdvice
     {
         /// <summary>
         /// Basic.
