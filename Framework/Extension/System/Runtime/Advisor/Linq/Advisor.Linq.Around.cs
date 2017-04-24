@@ -20,7 +20,7 @@ namespace System.Runtime
         {
             return new Advice((_Method, _Pointer) =>
             {
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _signature = _Method.Signature();
                 var _parameters = new Collection<ParameterExpression>(_signature.Select(_Type => Expression.Parameter(_Type)).ToArray());
                 var _method = new DynamicMethod(string.Empty, _type, _signature, _Method.DeclaringType, true);
@@ -50,7 +50,7 @@ namespace System.Runtime
         {
             return new Advice((_Method, _Pointer) =>
             {
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _signature = _Method.Signature();
                 var _parameters = new Collection<ParameterExpression>(_signature.Select(_Type => Expression.Parameter(_Type)).ToArray());
                 var _advice = _signature.Instance == null ? advice(null, _parameters) : advice(_parameters[0], _parameters.Skip(1));
@@ -75,7 +75,7 @@ namespace System.Runtime
         {
             return new Advice((_Method, _Pointer) =>
             {
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _signature = _Method.Signature();
                 var _parameters = new Collection<ParameterExpression>(_signature.Select(_Type => Expression.Parameter(_Type)).ToArray());
                 var _method = new DynamicMethod(string.Empty, _type, _signature, _Method.DeclaringType, true);

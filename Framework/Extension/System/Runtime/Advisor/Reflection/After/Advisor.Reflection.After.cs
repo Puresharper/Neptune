@@ -88,7 +88,7 @@ namespace System.Runtime
         {
             return new Advice((_Method, _Pointer) =>
             {
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _signature = _Method.Signature();
                 var _method = new DynamicMethod(string.Empty, _type, _signature, _Method.DeclaringType, true);
                 var _body = _method.GetILGenerator();

@@ -14,7 +14,7 @@ namespace System.Reflection
 {
     [Browsable(false)]
     [EditorBrowsable(EditorBrowsableState.Never)]
-    static internal class __MethodBase
+    static public class __MethodBase
     {
         static private class Initialization
         {
@@ -170,17 +170,17 @@ namespace System.Reflection
             return System.Attribute.GetCustomAttributes(method, Metadata<T>.Type).Cast<T>();
         }
 
-        static public RuntimeMethodHandle Handle(this MethodBase method)
+        static public RuntimeMethodHandle MethodHandle(this MethodBase method)
         {
             return method is DynamicMethod ? __MethodBase.m_Handle(method as DynamicMethod) : method.MethodHandle;
         }
 
-        static public void Prepare(this MethodBase method)
+        static internal void Prepare(this MethodBase method)
         {
-            RuntimeHelpers.PrepareMethod(method.Handle());
+            RuntimeHelpers.PrepareMethod(method.MethodHandle());
         }
 
-        static public string Declaration(this MethodBase method)
+        static internal string Declaration(this MethodBase method)
         {
             if (method.IsGenericMethod)
             {
@@ -189,9 +189,9 @@ namespace System.Reflection
             return string.Concat(method.Name, "(", string.Join(", ", method.GetParameters().Select(__ParameterInfo.Declaration)), ")");
         }
 
-        static public IntPtr Pointer(this MethodBase method)
+        static public IntPtr GetFunctionPointer(this MethodBase method)
         {
-            return method.Handle().GetFunctionPointer();
+            return method.MethodHandle().GetFunctionPointer();
         }
 
         static public Signature Signature(this MethodBase method)
@@ -215,7 +215,7 @@ namespace System.Reflection
             return method is MethodInfo ? (method as MethodInfo).GetBaseDefinition() : method;
         }
 
-        static public Type Type(this MethodBase method)
+        static public Type ReturnType(this MethodBase method)
         {
             return method is MethodInfo ? (method as MethodInfo).ReturnType : Metadata.Void;
         }

@@ -12,7 +12,7 @@ using MethodBase = System.Reflection.MethodBase;
 using MethodInfo = System.Reflection.MethodInfo;
 
 
-namespace Virtuoze.Neptune.Injector
+namespace Virtuoze.Neptune.Injection
 {
     static public class Program
     {
@@ -176,6 +176,55 @@ namespace Virtuoze.Neptune.Injector
             }
             _initializer.Body.Emit(OpCodes.Ret);
             return _field;
+        }
+
+        static private TypeDefinition Modelization(this MethodDefinition method, string name)
+        {
+            var _type = method.DeclaringType.Authority("<Modelization>").Type(method.IsConstructor ? $"<<Constructor>>" : $"<{method.Name}>", TypeAttributes.NestedPublic | TypeAttributes.Class | TypeAttributes.Abstract | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit);
+            foreach (var _parameter in method.GenericParameters) { _type.GenericParameters.Add(new GenericParameter(_parameter.Name, _type)); }
+            var _field = _type.Field<MethodBase>("<Method>", FieldAttributes.Static | FieldAttributes.Public); //TODO init this field in initializer!
+            var _argumentation = _type.Type<ValueType>("<Argumentation>", TypeAttributes.NestedPublic | TypeAttributes.Serializable | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit);
+            var _boundary = _type.Type<ValueType>("<Boundary>", TypeAttributes.NestedPublic | TypeAttributes.Serializable | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit);
+            foreach (var _parameter in method.Parameters)
+            {
+                _argumentation.Field(_parameter.Name, FieldAttributes.Public, _parameter.ParameterType);
+                _boundary.Field(_parameter.Name, FieldAttributes.Public, _parameter.ParameterType);
+            } //todo generic!
+            _boundary.Field("<return>", FieldAttributes.Public, method.ReturnType);
+            var _interface = _argumentation.Interface<IArgumentation>();
+            var _method = _argumentation.Method(method.Module.Import());
+            _method.CallingConvention = MethodCallingConvention.ThisCall;
+            
+            _boundary.Interface<IArgumentation>();
+            
+            _boundary.Interface<Advice.Boundary.IBefore>();
+            _boundary.Interface<Advice.Boundary.IResume>();
+            _boundary.Interface<Advice.Boundary.IYield>();
+            _boundary.Interface<Advice.Boundary.IAfter>();
+        }
+
+        static private TypeDefinition Argumentation(this MethodDefinition method)
+        {
+            var _argumentation = method.Modelization("<Argumentation>").Type<ValueType>(method.IsConstructor ? $"<<Constructor>>" : $"<{method.Name}>", TypeAttributes.NestedPublic | TypeAttributes.Serializable | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit);
+            foreach (var _parameter in method.GenericParameters) { _argumentation.GenericParameters.Add(new GenericParameter(_parameter.Name, _argumentation)); }
+            foreach (var _parameter in method.Parameters) { _argumentation.Field(_parameter.Name, FieldAttributes.Public, _parameter.ParameterType); } //todo generic!
+            return _argumentation;
+        }
+
+        static private TypeDefinition Boundary(this MethodDefinition method)
+        {
+            var _type = method.Modelization("<Boundary>").Type<ValueType>(method.IsConstructor ? $"<<Constructor>>" : $"<{method.Name}>", TypeAttributes.NestedPublic | TypeAttributes.Serializable | TypeAttributes.Sealed | TypeAttributes.BeforeFieldInit);
+            foreach (var _parameter in method.GenericParameters) { _type.GenericParameters.Add(new GenericParameter(_parameter.Name, _type)); }
+            foreach (var _parameter in method.Parameters) { _type.Field(_parameter.Name, FieldAttributes.Public, _parameter.ParameterType); } //todo generic!
+            //implements => IBefore
+            _type.Interface<Advice.Boundary.IBefore>();
+            _type.Interface<Advice.Boundary.IResume>();
+            _type.Interface<Advice.Boundary.IYield>();
+            _type.Interface<Advice.Boundary.IAfter>();
+
+            //var m = _type.Method<int>();
+
+            return _type;
         }
 
         static private FieldDefinition Machine(this MethodDefinition method)

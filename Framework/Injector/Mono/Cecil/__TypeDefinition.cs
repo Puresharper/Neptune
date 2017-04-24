@@ -92,9 +92,34 @@ namespace Mono.Cecil
             return _method;
         }
 
+        static public MethodDefinition Method(this TypeDefinition type, MethodDefinition method)
+        {
+            var _method = new MethodDefinition(string.Concat("<", method.DeclaringType.Name, ".", method.Name, ">"), (method.Attributes | MethodAttributes.Virtual) & ~MethodAttributes.Abstract, method.ReturnType);
+            _method.CallingConvention = method.CallingConvention;
+            if (method.GenericParameters.Count > 0)
+            {
+                foreach (var _parameter in method.GenericParameters)
+                {
+                    var _type = new GenericParameter(_parameter.Name, _method);
+                    _method.GenericParameters.Add(_type);
+                    if (method.ReturnType == _parameter) { _method.ReturnType = _type; }
+                }
+            }
+            return _method;
+        }
+
         static public TypeDefinition Type(this TypeDefinition type, string name, TypeAttributes attributes)
         {
             var _type = new TypeDefinition(null, name, attributes, type.Module.TypeSystem.Object);
+            type.NestedTypes.Add(_type);
+            _type.Attribute<CompilerGeneratedAttribute>();
+            _type.Attribute<SerializableAttribute>();
+            return _type;
+        }
+
+        static public TypeDefinition Type<T>(this TypeDefinition type, string name, TypeAttributes attributes)
+        {
+            var _type = new TypeDefinition(null, name, attributes, type.Module.Import(typeof(T)));
             type.NestedTypes.Add(_type);
             _type.Attribute<CompilerGeneratedAttribute>();
             _type.Attribute<SerializableAttribute>();
@@ -141,6 +166,13 @@ namespace Mono.Cecil
         {
             var _type = new GenericInstanceType(type);
             foreach (var _argument in arguments) { _type.GenericArguments.Add(_argument); }
+            return _type;
+        }
+
+        static public TypeReference Interface<T>(this TypeDefinition type)
+        {
+            var _type = type.Module.Import(typeof(T));
+            type.Interfaces.Add(_type);
             return _type;
         }
     }

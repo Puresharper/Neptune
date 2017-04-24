@@ -14,7 +14,7 @@ namespace System.Runtime
             {
                 static private MethodInfo Method(MethodBase method, IntPtr pointer)
                 {
-                    var _type = method.Type();
+                    var _type = method.ReturnType();
                     var _signature = method.Signature();
                     var _method = new DynamicMethod(string.Empty, _type, _signature, method.DeclaringType, true);
                     var _body = _method.GetILGenerator();

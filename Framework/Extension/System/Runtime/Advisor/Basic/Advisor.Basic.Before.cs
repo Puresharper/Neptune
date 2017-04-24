@@ -17,7 +17,7 @@ namespace System.Runtime
             return new Advice((_Method, _Pointer) =>
             {
                 var _signature = _Method.Signature();
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _method = new DynamicMethod(string.Empty, _type, _signature, _Method.DeclaringType, true);
                 var _body = _method.GetILGenerator();
                 if (advice.Target != null) { _body.Emit(OpCodes.Ldsfld, Advisor.Module.DefineField(advice.Target)); }
@@ -41,7 +41,7 @@ namespace System.Runtime
             return new Advice((_Method, _Pointer) =>
             {
                 var _signature = _Method.Signature();
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _method = new DynamicMethod(string.Empty, _type, _signature, _Method.DeclaringType, true);
                 var _body = _method.GetILGenerator();
                 if (advice.Target != null) { _body.Emit(OpCodes.Ldsfld, Advisor.Module.DefineField(advice.Target)); }

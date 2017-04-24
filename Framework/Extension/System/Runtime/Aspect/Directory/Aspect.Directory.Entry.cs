@@ -73,7 +73,7 @@ namespace System.Runtime
                         if (_advice == null) { continue; }
                         var _method = _advice.Decorate(this.Method, _pointer);
                         this.m_Sequence.AddLast(_method);
-                        if (_method != null) { _pointer = _method.Pointer(); }
+                        if (_method != null) { _pointer = _method.GetFunctionPointer(); }
                     }
                     this.m_Field.SetValue(null, _pointer);
                 }

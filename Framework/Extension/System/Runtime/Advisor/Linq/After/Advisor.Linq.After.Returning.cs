@@ -23,7 +23,7 @@ namespace System.Runtime
                 var _signature = _Method.Signature();
                 if (advice == null) { return null; }
                 if (advice.Type != Metadata.Void) { throw new NotSupportedException(); }
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _method = new DynamicMethod(string.Empty, _type, _signature, _Method.DeclaringType, true);
                 var _body = _method.GetILGenerator();
                 _body.Emit(_signature, false);
@@ -50,7 +50,7 @@ namespace System.Runtime
                 var _advice = _signature.Instance == null ? advice(null, _parameters) : advice(_parameters[0], _parameters.Skip(1));
                 if (_advice == null) { return null; }
                 if (_advice.Type != Metadata.Void) { throw new NotSupportedException(); }
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _method = new DynamicMethod(string.Empty, _type, _signature, _Method.DeclaringType, true);
                 var _body = _method.GetILGenerator();
                 _body.Emit(_signature, false);
@@ -74,7 +74,7 @@ namespace System.Runtime
             return new Advice((_Method, _Pointer) =>
             {
                 var _signature = _Method.Signature();
-                var _type = _Method.Type();
+                var _type = _Method.ReturnType();
                 var _parameters = _signature.Select(_Type => Expression.Parameter(_Type)).ToArray();
                 if (_type == Metadata.Void)
                 {

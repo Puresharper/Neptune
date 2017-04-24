@@ -6,10 +6,12 @@ namespace System.Runtime
     {
         public interface IBoundary
         {
-            void Before(Advice.Boundary.IBefore before);
-            void Resume(Advice.Boundary.IResume resume);
-            void Yield(Advice.Boundary.IYield yield);
-            void After(Advice.Boundary.IAfter after);
+            void Argument<T>(ref T value);
+            void Before();
+            void Resume();
+            void Yield();
+            void Return<T>(ref T value, ref Exception exception);
+            void Throw<T>(ref T value, ref Exception exception);
         }
     }
 }

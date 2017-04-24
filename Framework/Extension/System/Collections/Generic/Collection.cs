@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace System.Collections.Generic
 {
-    internal sealed partial class Collection<T> : IEnumerable<T>
+    public sealed partial class Collection<T> : IEnumerable<T>
     {
         static public implicit operator T[] (Collection<T> collection)
         {
@@ -79,7 +79,7 @@ namespace System.Collections.Generic
 
     [DebuggerDisplay("Count = {this.Count, nq}")]
     [DebuggerTypeProxy(typeof(Collection<>.Debugger))]
-    internal sealed partial class Collection<T>
+    public sealed partial class Collection<T>
     {
         private sealed class Debugger
         {

@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -40,15 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="System\Collections\Generic\Resource.cs" />
+    <Compile Include="System\Reflection\Gallery.cs" />
     <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.Factory.cs" />
     <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IFactory.cs" />
     <Compile Include="System\Runtime\Advice\Boundary\Advice.IBoundary.cs" />
     <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.cs" />
     <Compile Include="System\Runtime\Advice\Advice.cs" />
-    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IAfter.cs" />
-    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IResume.cs" />
-    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IYield.cs" />
-    <Compile Include="System\Runtime\Advice\Boundary\Advice.Boundary.IBefore.cs" />
     <Compile Include="System\Runtime\Advice\IAdvice.cs" />
     <Compile Include="System\Runtime\Advisor\Advisor.cs" />
     <Compile Include="System\Runtime\Advisor\Basic\Advisor.Basic.Boundary.cs" />

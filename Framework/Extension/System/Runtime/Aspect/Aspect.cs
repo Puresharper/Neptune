@@ -322,4 +322,17 @@ namespace System.Runtime
             else { throw new NotSupportedException(); }
         }
     }
+
+    /// <summary>
+    /// Aspect based on boundary implementation.
+    /// </summary>
+    /// <typeparam name="T">Boundary</typeparam>
+    public sealed class Aspect<T> : IAspect
+        where T : Advice.IBoundary, new()
+    {
+        public IEnumerable<IAdvice> Advise(MethodBase method)
+        {
+            yield return Advice.Basic.Boundary<T>();
+        }
+    }
 }

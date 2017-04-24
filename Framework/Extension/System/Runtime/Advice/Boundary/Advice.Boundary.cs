@@ -6,19 +6,27 @@ namespace System.Runtime
     {
         public partial class Boundary : Advice.IBoundary
         {
-            virtual public void Before(Advice.Boundary.IBefore before)
+            virtual public void Argument<T>(ref T value)
             {
             }
 
-            virtual public void Resume(Advice.Boundary.IResume resume)
+            virtual public void Before()
             {
             }
 
-            virtual public void Yield(Advice.Boundary.IYield yield)
+            virtual public void Resume()
             {
             }
 
-            virtual public void After(Advice.Boundary.IAfter after)
+            virtual public void Yield()
+            {
+            }
+
+            public void Return<T>(ref T value, ref Exception exception)
+            {
+            }
+
+            public void Throw<T>(ref T value, ref Exception exception)
             {
             }
         }

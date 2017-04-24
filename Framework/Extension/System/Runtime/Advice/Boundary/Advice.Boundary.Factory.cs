@@ -6,7 +6,7 @@ namespace System.Runtime
     {
         public partial class Boundary
         {
-            internal class Factory : Advice.Boundary.IFactory
+            public class Factory : Advice.Boundary.IFactory
             {
                 static private Advice.Boundary m_Boundary = new Advice.Boundary();
 
@@ -16,7 +16,7 @@ namespace System.Runtime
                 }
             }
 
-            internal class Factory<T> : Advice.Boundary.IFactory
+            public class Factory<T> : Advice.Boundary.IFactory
                 where T : Advice.IBoundary, new()
             {
                 public IBoundary Create()

@@ -7,7 +7,7 @@ using System.Linq;
 namespace System.Reflection
 {
     [DebuggerDisplay("({this.Instance == null ? System.String.Empty : System.String.Concat(\"this \", System.String.Join(\", \",  this.m_Signature as System.Collections.Generic.IEnumerable<System.Type>)), nq})")]
-    internal sealed class Signature : IEnumerable<Type>
+    public sealed class Signature : IEnumerable<Type>
     {
         static public implicit operator Type[](Signature signature)
         {
