@@ -28,7 +28,7 @@ namespace Mono.Cecil
         static public FieldReference Relative(this FieldDefinition field)
         {
             if (field.DeclaringType.GenericParameters.Count == 0) { return field; }
-            return new FieldReference(field.Name, field.DeclaringType.MakeGenericType(field.DeclaringType.GenericParameters));
+            return new FieldReference(field.Name, field.DeclaringType.Module.Import(field.FieldType), field.DeclaringType.MakeGenericType(field.DeclaringType.GenericParameters));
         }
     }
 }

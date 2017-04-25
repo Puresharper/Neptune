@@ -51,5 +51,21 @@ namespace Mono.Cecil
             foreach (var _argument in arguments) { _method.GenericArguments.Add(_argument); }
             return _method;
         }
+
+        //static public MethodReference Relative(this MethodDefinition method)
+        //{
+        //    if (method.DeclaringType.GenericParameters.Count == 0) { return method; }
+        //    var _method = new MethodReference(method.Name, method.DeclaringType.Module.Import(method.ReturnType), method.DeclaringType.MakeGenericType(method.DeclaringType.GenericParameters));
+        //    for (var _index = 0; _index < method.Parameters.Count; _index++)
+        //    {
+        //        if (method.Parameters[_index].ParameterType.IsGenericParameter)
+        //        {
+        //            var _owner = (method.Parameters[_index].ParameterType as GenericParameter).Owner;
+        //            if (_owner is MethodReference) { _method.Parameters.Add(new ParameterDefinition(method.Parameters[_index].Name, method }
+        //        }
+        //        _method.Parameters.Add(new ParameterDefinition(method.Parameters[_index].Name, method.Parameters[_index].ParameterType.IsGenericParameter ? (method.Parameters[_index].ParameterType.IsGenericParameter as GenericParameter).Owner is MethodReference);
+        //    }
+        //    return _method;
+        //}
     }
 }

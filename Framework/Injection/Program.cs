@@ -234,16 +234,16 @@ namespace Virtuoze.Neptune.Injection
                 _type.IsBeforeFieldInit = true;
                 var _intializer = _type.Initializer();
                 _intializer.Body.Emit(OpCodes.Newobj, System.Reflection.Metadata.Constructor(() => new Advice.Boundary.Factory()));
-                _intializer.Body.Emit(OpCodes.Stsfld, _factory);
+                _intializer.Body.Emit(OpCodes.Stsfld, _factory.Relative());
                 _intializer.Body.Emit(OpCodes.Ret);
                 var _constructor = _type.Methods.Single(m => m.IsConstructor && !m.IsStatic);
                 _constructor.Body = new MethodBody(_constructor);
                 _constructor.Body.Emit(OpCodes.Ldarg_0);
                 _constructor.Body.Emit(OpCodes.Call, System.Reflection.Metadata.Constructor(() => new object()));
                 _constructor.Body.Emit(OpCodes.Ldarg_0);
-                _constructor.Body.Emit(OpCodes.Ldsfld, _factory);
+                _constructor.Body.Emit(OpCodes.Ldsfld, _constructor.Module.Import(_factory.Relative()));
                 _constructor.Body.Emit(OpCodes.Callvirt, System.Reflection.Metadata<Advice.Boundary.IFactory>.Method(_Factory => _Factory.Create()));
-                _constructor.Body.Emit(OpCodes.Stfld, _boundary);
+                _constructor.Body.Emit(OpCodes.Stfld, _boundary.Relative());
                 _constructor.Body.Emit(OpCodes.Ret);
                 var _move = _type.Methods.Single(_Method => _Method.Name == "MoveNext");
                 var _state = _type.Fields.Single(_Field => _Field.Name == "<>1__state");
@@ -256,11 +256,11 @@ namespace Virtuoze.Neptune.Injection
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldc_I4_0));
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Bge, _resume));
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldarg_0));
-                _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldfld, _boundary)); //TODO generic
+                _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldfld, _boundary.Relative()));
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Callvirt, _move.Module.Import(System.Reflection.Metadata<Advice.IBoundary>.Method(_Boundary => _Boundary.Before()))));
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Br_S, _begin));
                 _move.Body.Instructions.Insert(_offset++, _resume);
-                _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldfld, _boundary)); //TODO generic
+                _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldfld, _boundary.Relative()));
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Callvirt, _move.Module.Import(System.Reflection.Metadata<Advice.IBoundary>.Method(_Boundary => _Boundary.Resume()))));
                 while (_offset < _move.Body.Instructions.Count)
                 {
@@ -273,7 +273,7 @@ namespace Virtuoze.Neptune.Injection
                             if (_operand.Name == "AwaitUnsafeOnCompleted")
                             {
                                 _move.Body.Instructions.Insert(++_offset, Instruction.Create(OpCodes.Ldarg_0));
-                                _move.Body.Instructions.Insert(++_offset, Instruction.Create(OpCodes.Ldfld, _boundary)); //TODO generic
+                                _move.Body.Instructions.Insert(++_offset, Instruction.Create(OpCodes.Ldfld, _boundary.Relative()));
                                 _move.Body.Instructions.Insert(++_offset, Instruction.Create(OpCodes.Callvirt, _move.Module.Import(System.Reflection.Metadata<Advice.IBoundary>.Method(_Boundary => _Boundary.Yield()))));
                             }
                             else if (_operand.Name == "SetResult")
@@ -285,7 +285,7 @@ namespace Virtuoze.Neptune.Injection
                                     _return.Parameters.Add(_parameter);
                                     var _exception = _return.Body.Variable<Exception>("<Exception>");
                                     _return.Body.Emit(OpCodes.Ldarg_0);
-                                    _return.Body.Emit(OpCodes.Ldfld, _boundary);
+                                    _return.Body.Emit(OpCodes.Ldfld, _boundary.Relative());
                                     _return.Body.Emit(OpCodes.Ldarg_S, _parameter);
                                     _return.Body.Emit(OpCodes.Ldloca_S, _exception);
                                     _return.Body.Emit(OpCodes.Callvirt, _move.Module.Import(_move.Module.Import(System.Reflection.Metadata<Advice.IBoundary>.Method(_Boundary => _Boundary.Return<object>(ref System.Reflection.Argument<object>.Value, ref System.Reflection.Argument<Exception>.Value)).GetGenericMethodDefinition()).MakeGenericMethod(_parameter.ParameterType)));
@@ -305,7 +305,12 @@ namespace Virtuoze.Neptune.Injection
                                     _return.Body.Emit(OpCodes.Ldarg_1);
                                     _return.Body.Emit(OpCodes.Call, _operand);
                                     _return.Body.Emit(OpCodes.Ret);
-                                    _instruction.Operand = _type.HasGenericParameters ? new MethodReference(_return.Name, _move.Module.TypeSystem.Void, _type.MakeGenericType(_type.GenericParameters)) : _return;
+                                    if (_type.HasGenericParameters)
+                                    {
+                                        _instruction.Operand = new MethodReference(_return.Name, _move.Module.TypeSystem.Void, _type.MakeGenericType(_type.GenericParameters));
+                                        (_instruction.Operand as MethodReference).Parameters.Add(_parameter);
+                                    }
+                                    else { _instruction.Operand = _return; }
                                     _move.Body.Instructions[_offset - 2].OpCode = OpCodes.Nop;
                                 }
                                 else
@@ -313,7 +318,7 @@ namespace Virtuoze.Neptune.Injection
                                     var _exception = _return.Body.Variable<Exception>("<Exception>");
                                     var _value = _return.Body.Variable<object>("<Value>");
                                     _return.Body.Emit(OpCodes.Ldarg_0);
-                                    _return.Body.Emit(OpCodes.Ldfld, _boundary);
+                                    _return.Body.Emit(OpCodes.Ldfld, _boundary.Relative());
                                     _return.Body.Emit(OpCodes.Ldloca_S, _value);
                                     _return.Body.Emit(OpCodes.Ldloca_S, _exception);
                                     _return.Body.Emit(OpCodes.Callvirt, _move.Module.Import(System.Reflection.Metadata<Advice.IBoundary>.Method(_Boundary => _Boundary.Return<object>(ref System.Reflection.Argument<object>.Value, ref System.Reflection.Argument<Exception>.Value)).GetGenericMethodDefinition()).MakeGenericMethod(_value.VariableType));
@@ -346,7 +351,7 @@ namespace Virtuoze.Neptune.Injection
                                     var _value = new VariableDefinition("<Value>", (_builder.FieldType as GenericInstanceType).GenericArguments[0]);
                                     _throw.Body.Variables.Add(_value);
                                     _throw.Body.Emit(OpCodes.Ldarg_0);
-                                    _throw.Body.Emit(OpCodes.Ldfld, _boundary);
+                                    _throw.Body.Emit(OpCodes.Ldfld, _boundary.Relative());
                                     _throw.Body.Emit(OpCodes.Ldloca_S, _value);
                                     _throw.Body.Emit(OpCodes.Ldarg_S, _parameter);
                                     _throw.Body.Emit(OpCodes.Callvirt, _move.Module.Import(System.Reflection.Metadata<Advice.IBoundary>.Method(_Boundary => _Boundary.Throw<object>(ref System.Reflection.Argument<object>.Value, ref System.Reflection.Argument<Exception>.Value)).GetGenericMethodDefinition()).MakeGenericMethod(_value.VariableType));
@@ -370,7 +375,7 @@ namespace Virtuoze.Neptune.Injection
                                 {
                                     var _value = _throw.Body.Variable<object>("<Value>");
                                     _throw.Body.Emit(OpCodes.Ldarg_0);
-                                    _throw.Body.Emit(OpCodes.Ldfld, _boundary);
+                                    _throw.Body.Emit(OpCodes.Ldfld, _boundary.Relative());
                                     _throw.Body.Emit(OpCodes.Ldloca_S, _value);
                                     _throw.Body.Emit(OpCodes.Ldarg_S, _parameter);
                                     _throw.Body.Emit(OpCodes.Callvirt, _move.Module.Import(System.Reflection.Metadata<Advice.IBoundary>.Method(_Boundary => _Boundary.Throw<object>(ref System.Reflection.Argument<object>.Value, ref System.Reflection.Argument<Exception>.Value)).GetGenericMethodDefinition()).MakeGenericMethod(_value.VariableType));
@@ -390,7 +395,12 @@ namespace Virtuoze.Neptune.Injection
                                     _throw.Body.Emit(OpCodes.Call, _method);
                                 }
                                 _throw.Body.Emit(OpCodes.Ret);
-                                _instruction.Operand = _type.HasGenericParameters ? new MethodReference(_throw.Name, _move.Module.TypeSystem.Void, _type.MakeGenericType(_type.GenericParameters)) : _throw;
+                                if (_type.HasGenericParameters)
+                                {
+                                    _instruction.Operand = new MethodReference(_throw.Name, _move.Module.TypeSystem.Void, _type.MakeGenericType(_type.GenericParameters));
+                                    (_instruction.Operand as MethodReference).Parameters.Add(_parameter);
+                                }
+                                else { _instruction.Operand = _throw; }
                                 _move.Body.Instructions[_offset - 2].OpCode = OpCodes.Nop;
                             }
                         }
