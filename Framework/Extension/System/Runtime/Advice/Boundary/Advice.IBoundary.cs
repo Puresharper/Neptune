@@ -6,7 +6,7 @@ namespace System.Runtime
     {
         public interface IBoundary
         {
-            void Argument<T>(ref T value);
+            void Argument(IntPtr pointer);
             void Before();
             void Resume();
             void Yield();

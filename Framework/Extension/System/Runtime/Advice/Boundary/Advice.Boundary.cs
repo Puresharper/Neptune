@@ -6,7 +6,7 @@ namespace System.Runtime
     {
         public partial class Boundary : Advice.IBoundary
         {
-            virtual public void Argument<T>(ref T value)
+            virtual public void Argument(IntPtr pointer)
             {
             }
 
