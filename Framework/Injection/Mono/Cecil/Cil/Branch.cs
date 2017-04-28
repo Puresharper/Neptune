@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Mono;
 using Mono.Cecil;
 
@@ -8,13 +9,19 @@ namespace Mono.Cecil.Cil
 {
     internal partial class Branch
     {
-        static private Dictionary<MethodBody, Branch> m_Dictionary = new Dictionary<MethodBody, Branch>();
+        static private Dictionary<MethodBody, List<Branch>> m_Dictionary = new Dictionary<MethodBody, List<Branch>>();
 
         static public Branch Query(MethodBody body)
         {
-            Branch _branch;
-            if (Branch.m_Dictionary.TryGetValue(body, out _branch)) { Branch.m_Dictionary.Remove(body); }
-            return _branch;
+            List<Branch> _item;
+            if (Branch.m_Dictionary.TryGetValue(body, out _item))
+            {
+                var _branch = _item.Last();
+                _item.Remove(_branch);
+                if (_item.Count == 0) { Branch.m_Dictionary.Remove(body); }
+                return _branch;
+            }
+            return null;
         }
 
         public readonly MethodBody Body;

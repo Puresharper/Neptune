@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace System.Runtime
 {
@@ -6,7 +7,15 @@ namespace System.Runtime
     {
         public partial class Boundary : Advice.IBoundary
         {
-            virtual public void Argument(IntPtr pointer)
+            virtual public void Initialize(MethodBase method, ParameterInfo[] signature)
+            {
+            }
+
+            virtual public void Instance<T>(T instance)
+            {
+            }
+
+            virtual public void Argument<T>(int index, ref T value)
             {
             }
 
@@ -22,11 +31,23 @@ namespace System.Runtime
             {
             }
 
-            public void Return<T>(ref T value, ref Exception exception)
+            public void Return()
             {
             }
 
-            public void Throw<T>(ref T value, ref Exception exception)
+            public void Throw(ref Exception exception)
+            {
+            }
+
+            public void Return<T>(ref T value)
+            {
+            }
+
+            public void Throw<T>(ref Exception exception, ref T value)
+            {
+            }
+
+            public void Finally()
             {
             }
         }

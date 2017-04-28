@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace System.Runtime
 {
@@ -6,12 +7,17 @@ namespace System.Runtime
     {
         public interface IBoundary
         {
-            void Argument(IntPtr pointer);
+            void Initialize(MethodBase method, ParameterInfo[] signature);
+            void Instance<T>(T instance);
+            void Argument<T>(int index, ref T value);
             void Before();
             void Resume();
             void Yield();
-            void Return<T>(ref T value, ref Exception exception);
-            void Throw<T>(ref T value, ref Exception exception);
+            void Return();
+            void Throw(ref Exception exception);
+            void Return<T>(ref T value);
+            void Throw<T>(ref Exception exception, ref T value);
+            void Finally();
         }
     }
 }

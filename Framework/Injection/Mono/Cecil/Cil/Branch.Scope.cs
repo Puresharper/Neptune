@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Mono;
 using Mono.Cecil;
 
@@ -17,7 +19,14 @@ namespace Mono.Cecil.Cil
 
             public void Dispose()
             {
-                Branch.m_Dictionary.Add(this.m_Branch.Body, this.m_Branch);
+                List<Branch> _item;
+                if (Branch.m_Dictionary.TryGetValue(this.m_Branch.Body, out _item)) { _item.Add(this.m_Branch); }
+                else
+                {
+                    _item = new List<Branch>();
+                    _item.Add(this.m_Branch);
+                    Branch.m_Dictionary.Add(this.m_Branch.Body, _item);
+                }
             }
         }
     }
