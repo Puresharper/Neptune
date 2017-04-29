@@ -7,10 +7,6 @@ namespace System.Runtime
     {
         public partial class Boundary : Advice.IBoundary
         {
-            virtual public void Initialize(MethodBase method, ParameterInfo[] signature)
-            {
-            }
-
             virtual public void Instance<T>(T instance)
             {
             }
@@ -19,7 +15,7 @@ namespace System.Runtime
             {
             }
 
-            virtual public void Before()
+            virtual public void Invoke()
             {
             }
 
@@ -47,7 +43,7 @@ namespace System.Runtime
             {
             }
 
-            public void Finally()
+            public void Dispose()
             {
             }
         }

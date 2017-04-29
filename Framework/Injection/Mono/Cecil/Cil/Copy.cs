@@ -94,6 +94,7 @@ namespace Mono.Cecil.Cil
                     else if (_operand is CallSite) { _instruction = Instruction.Create(instruction.OpCode, _operand as CallSite); }
                     else { throw new NotSupportedException(); }
                     var _sequence = instruction.SequencePoint;
+                    _instruction.Offset = instruction.Offset;
                     if (_sequence != null)
                     {
                         _instruction.SequencePoint = new SequencePoint(_sequence.Document)

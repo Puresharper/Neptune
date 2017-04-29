@@ -15,12 +15,13 @@ namespace Mono.Cecil
         static private readonly MethodInfo GetTypeFromHandle = System.Reflection.Metadata.Method(() => Type.GetTypeFromHandle(System.Reflection.Argument<RuntimeTypeHandle>.Value));
         static private readonly MethodInfo GetMethodFromHandle = System.Reflection.Metadata.Method(() => MethodInfo.GetMethodFromHandle(System.Reflection.Argument<RuntimeMethodHandle>.Value, System.Reflection.Argument<RuntimeTypeHandle>.Value));
 
-        static public void Add(this MethodBody body, Instruction instruction)
+        static public int Add(this MethodBody body, Instruction instruction)
         {
             body.Instructions.Add(instruction);
             var _branch = Branch.Query(body);
-            if (_branch == null) { return; }
+            if (_branch == null) { return body.Instructions.Count - 1; }
             _branch.Finialize(instruction);
+            return body.Instructions.Count - 1;
         }
 
         static public IDisposable True(this MethodBody body)
@@ -33,85 +34,89 @@ namespace Mono.Cecil
             return new Branch(body, OpCodes.Brtrue).Begin();
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction)
+        static public int Emit(this MethodBody body, OpCode instruction)
         {
-            body.Add(Instruction.Create(instruction));
+            return body.Add(Instruction.Create(instruction));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, VariableDefinition variable)
+        static public int Emit(this MethodBody body, OpCode instruction, Instruction label)
         {
-            body.Add(Instruction.Create(instruction, variable));
+            return body.Add(Instruction.Create(instruction, label));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, MethodInfo method)
+        static public int Emit(this MethodBody body, OpCode instruction, VariableDefinition variable)
         {
-            body.Add(Instruction.Create(instruction, body.Method.DeclaringType.Module.Import(method)));
+            return body.Add(Instruction.Create(instruction, variable));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, TypeReference type, Collection<ParameterDefinition> parameters)
+        static public int Emit(this MethodBody body, OpCode instruction, MethodInfo method)
+        {
+            return body.Add(Instruction.Create(instruction, body.Method.DeclaringType.Module.Import(method)));
+        }
+
+        static public int Emit(this MethodBody body, OpCode instruction, TypeReference type, Collection<ParameterDefinition> parameters)
         {
             if (instruction == OpCodes.Calli)
             {
                 var _signature = new CallSite(type);
                 foreach (var _parameter in parameters) { _signature.Parameters.Add(_parameter); }
                 _signature.CallingConvention = MethodCallingConvention.Default;
-                body.Add(Instruction.Create(instruction, _signature));
-                return;
+                return body.Add(Instruction.Create(instruction, _signature));
             }
             throw new InvalidOperationException();
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, TypeReference type)
+        static public int Emit(this MethodBody body, OpCode instruction, TypeReference type)
         {
-            body.Add(Instruction.Create(instruction, type));
+            return body.Add(Instruction.Create(instruction, type));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, Type type)
+        static public int Emit(this MethodBody body, OpCode instruction, Type type)
         {
-            body.Add(Instruction.Create(instruction, body.Method.Module.Import(type)));
+            return body.Add(Instruction.Create(instruction, body.Method.Module.Import(type)));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, MethodReference method)
+        static public int Emit(this MethodBody body, OpCode instruction, MethodReference method)
         {
-            body.Add(Instruction.Create(instruction, method));
+            return body.Add(Instruction.Create(instruction, method));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, FieldReference field)
+        static public int Emit(this MethodBody body, OpCode instruction, FieldReference field)
         {
-            body.Add(Instruction.Create(instruction, field));
+            return body.Add(Instruction.Create(instruction, field));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, ParameterDefinition parameter)
+        static public int Emit(this MethodBody body, OpCode instruction, ParameterDefinition parameter)
         {
-            body.Add(Instruction.Create(instruction, parameter));
+            return body.Add(Instruction.Create(instruction, parameter));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, int operand)
+        static public int Emit(this MethodBody body, OpCode instruction, int operand)
         {
-            body.Add(Instruction.Create(instruction, operand));
+            return body.Add(Instruction.Create(instruction, operand));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, string operand)
+        static public int Emit(this MethodBody body, OpCode instruction, string operand)
         {
-            body.Add(Instruction.Create(instruction, operand));
+            return body.Add(Instruction.Create(instruction, operand));
         }
 
-        static public void Emit(this MethodBody body, OpCode instruction, ConstructorInfo constructor)
+        static public int Emit(this MethodBody body, OpCode instruction, ConstructorInfo constructor)
         {
-            body.Add(Instruction.Create(instruction, body.Method.DeclaringType.Module.Import(constructor)));
+            return body.Add(Instruction.Create(instruction, body.Method.DeclaringType.Module.Import(constructor)));
         }
 
-        static public void Emit(this MethodBody body, TypeReference type)
+        static public int Emit(this MethodBody body, TypeReference type)
         {
             body.Emit(OpCodes.Ldtoken, type);
-            body.Emit(OpCodes.Call, __MethodBody.GetTypeFromHandle);
+            return body.Emit(OpCodes.Call, __MethodBody.GetTypeFromHandle);
         }
 
-        static public void Emit(this MethodBody body, MethodReference method)
+        static public int Emit(this MethodBody body, MethodReference method)
         {
             body.Emit(OpCodes.Ldtoken, method);
             body.Emit(OpCodes.Ldtoken, method.DeclaringType);
-            body.Emit(OpCodes.Call, __MethodBody.GetMethodFromHandle);
+            return body.Emit(OpCodes.Call, __MethodBody.GetMethodFromHandle);
         }
 
         static public VariableDefinition Variable<T>(this MethodBody body)
