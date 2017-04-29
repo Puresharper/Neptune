@@ -255,6 +255,7 @@ namespace Virtuoze.Neptune.Injection
                 _constructor.Body.Emit(OpCodes.Stfld, _boundary.Relative());
                 _constructor.Body.Emit(OpCodes.Ret);
                 var _move = _type.Methods.Single(_Method => _Method.Name == "MoveNext");
+                var _instance = method.IsStatic ? null : _type.Fields.Single(_Field => _Field.Name == "<>4__this").Relative();
                 var _state = _type.Fields.Single(_Field => _Field.Name == "<>1__state").Relative();
                 var _builder = _type.Fields.Single(_Field => _Field.Name == "<>t__builder").Relative();
                 var _offset = 0;
@@ -264,6 +265,14 @@ namespace Virtuoze.Neptune.Injection
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldfld, _state));
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldc_I4_0));
                 _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Bge, _resume));
+                if (_instance != null)
+                {
+                    _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldarg_0));
+                    _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldfld, _boundary.Relative()));
+                    _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldarg_0));
+                    _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldfld, _instance));
+                    _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Callvirt, _move.Module.Import(_move.Module.Import(System.Reflection.Metadata<Advice.IBoundary>.Method(_Boundary => _Boundary.Instance<object>(System.Reflection.Argument<object>.Value)).GetGenericMethodDefinition()).MakeGenericMethod(method.DeclaringType))));
+                }
                 foreach (var _parameter in method.Parameters)
                 {
                     _move.Body.Instructions.Insert(_offset++, Instruction.Create(OpCodes.Ldarg_0));
